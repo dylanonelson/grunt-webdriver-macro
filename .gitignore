@@ -1,5 +1,4 @@
-*.swp
-*.swo
+*.sw*
 node_modules
 npm-debug.log
 tmp
