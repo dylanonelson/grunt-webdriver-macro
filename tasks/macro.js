@@ -18,8 +18,24 @@ module.exports = function(grunt) {
       return;
     }
 
-    var macroConfig = require(path.resolve(process.cwd(), this.data.macroFile));
+    var macroConfigPath = path.resolve(process.cwd(), this.data.macroFile);
+    var macroConfig = require(macroConfigPath);
     var driver = macroConfig.setup();
+
+    // Watch for changes to the macrofile
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.config.set('watch', {
+      macro: {
+        files: [this.data.macroFile]
+      }
+    });
+    grunt.task.run('watch:macro');
+    grunt.event.on('watch', function(action, filepath, target) {
+      console.log('Reloading macro definitions...');
+      delete require.cache[macroConfigPath];
+      macroConfig = require(macroConfigPath);
+    });
+
   });
 
 };
