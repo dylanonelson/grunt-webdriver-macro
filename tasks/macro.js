@@ -9,13 +9,15 @@
 'use strict';
 
 var path = require('path');
+var chokidar = require('chokidar');
 
 module.exports = function(grunt) {
 
   grunt.registerMultiTask('macro', 'Grunt plugin for automating browser manipulation during front end development.', function() {
+    var done = this.async();
+
     if (typeof this.data.macroFile === 'undefined') {
-      console.warn('No macrofile provided');
-      return;
+      done(new Error('No macrofile provided'));
     }
 
     var macroConfigPath = path.resolve(process.cwd(), this.data.macroFile);
@@ -23,15 +25,9 @@ module.exports = function(grunt) {
     var driver = macroConfig.setup();
 
     // Watch for changes to the macrofile
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.config.set('watch', {
-      macro: {
-        files: [this.data.macroFile]
-      }
-    });
-    grunt.task.run('watch:macro');
-    grunt.event.on('watch', function(action, filepath, target) {
-      console.log('Reloading macro definitions...');
+    console.log('Watching macro definitions for changes...');
+    chokidar.watch(macroConfigPath).on('change', function(event) {
+      console.log('Change detected; reloading macro definitions.');
       delete require.cache[macroConfigPath];
       macroConfig = require(macroConfigPath);
     });
