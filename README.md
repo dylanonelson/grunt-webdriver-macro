@@ -2,6 +2,19 @@
 
 > Grunt plugin for automating browser manipulation during front end development.
 
+## Premise
+Reduce repetitive manual refreshing and DOM interactions using Selenium webdriver 'macros,' configurable chunks of code that you can use to set up the state of your front end app. These macros can be edited and run in real time without leaving your terminal. For example, if you are writing code that affects a dropdown menu or modal, you can set up a macro to refresh the page and open the menu or modal with a click, then run that macro from a terminal window running the `grunt macro` process. If as you work you change the markup in your app, you can edit the macro file and have it reloaded without exiting the process.
+
+### Goals
+- Check front end changes without leaving the terminal
+- Reduce repetitive manual browser interactions during development
+- Write code for front end tests in parallel with features
+- Structure front end work in a TDD-like but more flexible way
+
+## Development checklist
+- [x] Load macro definitions based on user config
+- [ ] Dynamically reload macro definitions on file change
+
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
 
@@ -17,14 +30,14 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-webdriver-macro');
 ```
 
-## The "webdriver_macro" task
+## The "macro" task
 
 ### Overview
-In your project's Gruntfile, add a section named `webdriver_macro` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `macro` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  webdriver_macro: {
+  macro: {
     options: {
       // Task-specific options go here.
     },
@@ -37,53 +50,7 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.macroFile
 Type: `String`
-Default value: `',  '`
 
-A string value that is used to do something with whatever.
-
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
-
-### Usage Examples
-
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  webdriver_macro: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  webdriver_macro: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
-## Release History
-_(Nothing yet)_
+Path to the module which contains your macro definitions.
