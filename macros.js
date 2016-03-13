@@ -5,5 +5,8 @@ module.exports = {
     var capabilities = wd.DesiredCapabilities["firefox"]();
 
     return new wd.RemoteWebDriver(hub, capabilities);
+  },
+  quit: function (driver) {
+    driver.quit();
   }
 }

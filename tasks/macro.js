@@ -10,6 +10,7 @@
 
 var configWatcher = require('./configWatcher');
 var macroSelenium = require('./macroSelenium');
+var readline = require('readline');
 
 module.exports = function(grunt) {
 
@@ -25,8 +26,22 @@ module.exports = function(grunt) {
     configWatcher.watchMacroFile();
 
     macroSelenium.start().then(function(hub) {
-        driver = macros.setup(hub);
+      driver = macros.setup(hub);
     })
+
+    var rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.on('line', function(line) {
+      if (line === 'quit') {
+        macros.quit(driver);
+        macroSelenium.shutdown();
+        rl.close();
+        done();
+      }
+    });
   });
 
 };

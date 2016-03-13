@@ -1,6 +1,7 @@
 var selenium = require('selenium-standalone');
 var request = require('request');
 var q = require('q');
+var seleniumProcess = null;
 
 module.exports.start = function () {
   // Start Selenium server and log output
@@ -47,4 +48,8 @@ module.exports.start = function () {
   }
 
   return q(installSelenium).then(startSelenium).then(checkForSelenium);
+}
+
+module.exports.shutdown = function () {
+  seleniumProcess.kill();
 }
