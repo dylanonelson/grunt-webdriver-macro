@@ -8,32 +8,23 @@
 
 'use strict';
 
-var path = require('path');
 var request = require('request');
-var chokidar = require('chokidar');
 var q = require('q');
 var selenium = require('selenium-standalone');
+var configWatcher = require('./configWatcher');
 
 module.exports = function(grunt) {
 
   grunt.registerMultiTask('macro', 'Grunt plugin for automating browser manipulation during front end development.', function() {
     var done = this.async();
+    var macros = null, driver = null;
 
     if (typeof this.data.macroFile === 'undefined') {
       done(new Error('No macrofile provided'));
     }
 
-    var macroConfigPath = path.resolve(process.cwd(), this.data.macroFile);
-    var macroConfig = require(macroConfigPath);
-    var driver = null;
-
-    // Watch for changes to the macrofile
-    console.log('Watching macro definitions for changes...');
-    chokidar.watch(macroConfigPath).on('change', function(event) {
-      console.log('Change detected; reloading macro definitions.');
-      delete require.cache[macroConfigPath];
-      macroConfig = require(macroConfigPath);
-    });
+    macros = configWatcher.getMacros(this.data.macroFile);
+    configWatcher.watchMacroFile();
 
     // Start Selenium server and log output
     var installSelenium = function() {
@@ -77,7 +68,7 @@ module.exports = function(grunt) {
     }
 
     var setupDriver = function (hub) {
-      driver = macroConfig.setup(hub);
+      driver = macros.setup(hub);
     }
 
     q(installSelenium).then(startSelenium).then(checkForSelenium).then(setupDriver);
