@@ -8,7 +8,7 @@
 
 'use strict';
 
-var configWatcher = require('./configWatcher');
+var config = require('./configWatcher');
 var macroSelenium = require('./macroSelenium');
 var readline = require('readline');
 
@@ -22,11 +22,11 @@ module.exports = function(grunt) {
       done(new Error('No macrofile provided'));
     }
 
-    macros = configWatcher.getMacros(this.data.macroFile);
-    configWatcher.watchMacroFile();
+    config.initialize(this.data.macroFile);
+    config.watch();
 
     macroSelenium.start().then(function(hub) {
-      driver = macros.setup(hub);
+      driver = config.macros().setup(hub);
     })
 
     var rl = readline.createInterface({
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
     });
 
     var endTask = function () {
-      macros.quit(driver);
+      config.macros().quit(driver);
       macroSelenium.shutdown();
       rl.close();
       done();
@@ -46,8 +46,8 @@ module.exports = function(grunt) {
         endTask()
       }
 
-      if (typeof macros[line] != 'undefined') {
-        macros[line](driver);
+      if (typeof config.macros()[line] != 'undefined') {
+        config.macros()[line](driver);
       } else {
         console.log('You have not defined a macro for ' + line + '.');
       }

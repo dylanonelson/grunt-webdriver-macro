@@ -4,16 +4,15 @@ var path = require('path');
 var macroPath = null;
 var macroObj = null;
 
-module.exports.getMacros = function (macroConfigPath) {
+module.exports.initialize = function (macroConfigPath) {
   macroPath =
     path.isAbsolute(macroConfigPath) ? macroConfigPath : path.resolve(process.cwd(), macroConfigPath);
 
   macroObj = require(macroPath);
-  return macroObj;
 }
 
 // Watch for changes to the macrofile
-module.exports.watchMacroFile = function () {
+module.exports.watch = function () {
   console.log('Watching macro definitions for changes...');
 
   chokidar.watch(macroPath).on('change', function(event) {
@@ -21,4 +20,8 @@ module.exports.watchMacroFile = function () {
     delete require.cache[macroPath];
     macroObj = require(macroPath);
   });
+}
+
+module.exports.macros = function () {
+  return macroObj;
 }
