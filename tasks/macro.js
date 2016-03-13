@@ -34,12 +34,22 @@ module.exports = function(grunt) {
       output: process.stdout
     });
 
+    var endTask = function () {
+      macros.quit(driver);
+      macroSelenium.shutdown();
+      rl.close();
+      done();
+    }
+
     rl.on('line', function(line) {
       if (line === 'quit') {
-        macros.quit(driver);
-        macroSelenium.shutdown();
-        rl.close();
-        done();
+        endTask()
+      }
+
+      if (typeof macros[line] != 'undefined') {
+        macros[line](driver);
+      } else {
+        console.log('You have not defined a macro for ' + line + '.');
       }
     });
   });

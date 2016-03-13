@@ -16,6 +16,7 @@ Reduce repetitive manual refreshing and DOM interactions using Selenium webdrive
 - [x] Dynamically reload macro definitions on file change
 - [x] Set up Selenium hub and check whether it has started
 - [x] Initialize driver using setup function
+- [x] Accept user input to run macros
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
