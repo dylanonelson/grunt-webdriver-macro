@@ -25,6 +25,7 @@ module.exports = function(grunt) {
 
     var macroConfigPath = path.resolve(process.cwd(), this.data.macroFile);
     var macroConfig = require(macroConfigPath);
+    var driver = null;
 
     // Watch for changes to the macrofile
     console.log('Watching macro definitions for changes...');
@@ -56,23 +57,30 @@ module.exports = function(grunt) {
     };
 
     // Wait for Selenium server startup
-    var checkForSelenium = function () {
-      var interval = setInterval(function() {
-        request.get('http://127.0.0.1:4444/wd/hub', function (error, response, body) {
-          if (error != undefined) {
+    var checkForSelenium = function() {
+      return q.Promise(function (resolve, reject, notify) {
+        var interval = setInterval(function() {
+          request.get('http://127.0.0.1:4444/wd/hub', function (error, response, body) {
+            if (error != undefined) {
+              return;
+            }
+            if (response != undefined && response.statusCode === 200) {
+              clearInterval(interval);
+              console.log('Connection established!');
+              resolve('http://127.0.0.1:4444/wd/hub');
+            }
+          }).on('error', function (e) {
             return;
-          }
-          if (response != undefined && response.statusCode === 200) {
-            clearInterval(interval);
-            console.log('Connection established!');
-          }
-        }).on('error', function (e) {
-          return;
-        })
-      }, 200);
+          })
+        }, 200);
+      });
     }
 
-    q(installSelenium).then(startSelenium).then(checkForSelenium);
+    var setupDriver = function (hub) {
+      driver = macroConfig.setup(hub);
+    }
+
+    q(installSelenium).then(startSelenium).then(checkForSelenium).then(setupDriver);
 
   });
 
