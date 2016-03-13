@@ -8,24 +8,26 @@ module.exports.start = function () {
     selenium.install()
   };
 
-  var startSelenium = function() {
+  var startSelenium = function () {
     console.log('Starting Selenium server...');
     selenium.start({
         spawnOptions: {
           detached: true
         }
-      }, function(err, child) {
+      }, function (err, child) {
         if (err != undefined) {
           console.log('There was an error starting the Selenium server');
         }
         child.stderr.on('data', function (data) {
           console.log(data.toString());
         });
+
+        seleniumProcess = child;
     });
   };
 
   // Wait for Selenium server startup
-  var checkForSelenium = function() {
+  var checkForSelenium = function () {
     return q.Promise(function (resolve, reject, notify) {
       var interval = setInterval(function() {
         request.get('http://127.0.0.1:4444/wd/hub', function (error, response, body) {
