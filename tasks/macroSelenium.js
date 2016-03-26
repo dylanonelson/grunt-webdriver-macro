@@ -6,18 +6,38 @@ var seleniumProcess = null;
 module.exports.start = function () {
   // Start Selenium server and log output
   var installSelenium = function() {
-    selenium.install()
+    return q.Promise(function (resolve, reject, notify) {
+      console.log("Hello");
+      selenium.install({
+        version: '2.53.0',
+        baseURL: 'https://selenium-release.storage.googleapis.com',
+        drivers: {
+          chrome: {
+            version: '2.21',
+            baseURL: 'https://chromedriver.storage.googleapis.com'
+          }
+        },
+        logger: function (message) {
+          console.log(message);
+        }
+      }, function (err) {
+        if (err != null) {
+          reject(err);
+        } else {
+          resolve(true);
+        }
+      });
+    })
   };
 
   var startSelenium = function () {
     console.log('Starting Selenium server...');
     selenium.start({
-        spawnOptions: {
-          detached: true
-        }
-      }, function (err, child) {
+      version: '2.53.0',
+    }, function (err, child) {
         if (err != undefined) {
           console.log('There was an error starting the Selenium server');
+          console.log(err);
         }
         child.stderr.on('data', function (data) {
           console.log(data.toString());
@@ -47,7 +67,7 @@ module.exports.start = function () {
     });
   }
 
-  return q(installSelenium).then(startSelenium).then(checkForSelenium);
+  return installSelenium().then(startSelenium).then(checkForSelenium);
 }
 
 module.exports.shutdown = function () {

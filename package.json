@@ -31,8 +31,7 @@
     "chokidar": "~1.4.0",
     "request": "^2.69.0",
     "q": "~1.0",
-    "selenium-standalone": "~4.9.1",
-    "webdriver-sync": "^0.16.6"
+    "selenium-standalone": "~4.9.1"
   },
   "devDependencies": {
     "grunt": "~0.4.5"
