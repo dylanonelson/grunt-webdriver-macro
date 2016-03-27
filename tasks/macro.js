@@ -8,8 +8,8 @@
 
 'use strict';
 
-var config = require('./configWatcher');
-var macroSelenium = require('./macroSelenium');
+var config = require('../lib/configWatcher');
+var macroSelenium = require('../lib/macroSelenium');
 var readline = require('readline');
 
 module.exports = function(grunt) {
