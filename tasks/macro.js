@@ -17,6 +17,7 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('macro', 'Grunt plugin for automating browser manipulation during front end development.', function() {
     var done = this.async();
     var macros = null, driver = null;
+    var DEFAULT_SELENIUM_VERSION = '2.53.0';
 
     if (typeof this.data.macroFile === 'undefined') {
       done(new Error('No macrofile provided'));
@@ -25,7 +26,7 @@ module.exports = function(grunt) {
     config.initialize(this.data.macroFile);
     config.watch();
 
-    macroSelenium.start().then(function(hub) {
+    macroSelenium.start(this.data.seleniumVersion || DEFAULT_SELENIUM_VERSION).then(function(hub) {
       driver = config.macros().setup(hub);
     })
 

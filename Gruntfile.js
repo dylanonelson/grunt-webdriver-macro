@@ -14,9 +14,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     macro: {
       default: {
-        macroFile: './macros.js'
+        macroFile: './macros.js',
+        seleniumVersion: '2.50.1'
       }
-    },
+    }
   });
 
   // Actually load this plugin's task(s).

@@ -17,7 +17,7 @@ Reduce repetitive manual refreshing and DOM interactions using Selenium webdrive
 - [x] Set up Selenium hub and check whether it has started
 - [x] Initialize driver using setup function
 - [x] Accept user input to run macros
-- [ ] Read selenium and driver versions from Gruntfile config
+- [x] Read Selenium version from Gruntfile config
 - [ ] Check for previously running Selenium server on start
 
 ## Getting Started
@@ -59,3 +59,8 @@ grunt.initConfig({
 Type: `String`
 
 Path to the module which contains your macro definitions.
+
+### options.seleniumVersion
+Type: `String`
+
+Version of Selenium server to install and run. Defaults to 2.53.0.
