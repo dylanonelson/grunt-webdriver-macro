@@ -18,7 +18,8 @@ Reduce repetitive manual refreshing and DOM interactions using Selenium webdrive
 - [x] Initialize driver using setup function
 - [x] Accept user input to run macros
 - [x] Read Selenium version from Gruntfile config
-- [ ] Check for previously running Selenium server on start
+- [x] Check for previously running Selenium server on start
+- [ ] Handle Selenium errors thrown by macros
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`

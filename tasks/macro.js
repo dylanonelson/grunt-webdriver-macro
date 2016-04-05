@@ -11,6 +11,7 @@
 var config = require('../lib/configWatcher');
 var macroSelenium = require('../lib/macroSelenium');
 var readline = require('readline');
+var chalk = require('chalk');
 
 module.exports = function(grunt) {
 
@@ -26,9 +27,16 @@ module.exports = function(grunt) {
     config.initialize(this.data.macroFile);
     config.watch();
 
-    macroSelenium.start(this.data.seleniumVersion || DEFAULT_SELENIUM_VERSION).then(function(hub) {
-      driver = config.macros().setup(hub);
-    })
+    macroSelenium.checkForSelenium().then(function (started) {
+      if (started) {
+        console.log(chalk.bold.blue('Selenium server is already running locally. Skipping Selenium installation and startup.'));
+        return;
+      } else {
+        macroSelenium.start(this.data.seleniumVersion || DEFAULT_SELENIUM_VERSION).then(function(hub) {
+          driver = config.macros().setup(hub);
+        })
+      }
+    }.bind(this))
 
     var rl = readline.createInterface({
       input: process.stdin,
