@@ -50,7 +50,7 @@ module.exports = function(grunt) {
       if (typeof config.macros()[line] != 'undefined') {
         config.macros()[line](driver);
       } else {
-        console.log('You have not defined a macro for ' + line + '.');
+        console.log(chalk.red('You have not defined a macro for ' + line + '.'));
       }
     });
   });
