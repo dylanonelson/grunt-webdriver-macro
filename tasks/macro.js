@@ -56,7 +56,13 @@ module.exports = function(grunt) {
       }
 
       if (typeof config.macros()[line] != 'undefined') {
-        config.macros()[line](driver);
+        try {
+          config.macros()[line](driver);
+        } catch (e) {
+          console.log(chalk.blue('Selenium threw an error while executing your macro ' + '(' + line + '):'));
+          console.log(e);
+          console.log('\n');
+        }
       } else {
         console.log(chalk.red('You have not defined a macro for ' + line + '.'));
       }
