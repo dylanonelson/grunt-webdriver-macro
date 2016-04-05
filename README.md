@@ -19,7 +19,8 @@ Reduce repetitive manual refreshing and DOM interactions using Selenium webdrive
 - [x] Accept user input to run macros
 - [x] Read Selenium version from Gruntfile config
 - [x] Check for previously running Selenium server on start
-- [ ] Handle Selenium errors thrown by macros
+- [x] Handle Selenium errors thrown by macros
+- [ ] Execute default macro on return
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -58,10 +59,12 @@ grunt.initConfig({
 
 #### options.macroFile
 Type: `String`
+Default: `./macroFile.js`
 
 Path to the module which contains your macro definitions.
 
 ### options.seleniumVersion
 Type: `String`
+Default: `2.53.0`
 
 Version of Selenium server to install and run. Defaults to 2.53.0.
