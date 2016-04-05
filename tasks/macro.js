@@ -20,12 +20,13 @@ module.exports = function(grunt) {
     var done = this.async();
     var macros = null, driver = null;
     var DEFAULT_SELENIUM_VERSION = '2.53.0';
+    var DEFAULT_FILE_PATH = './macroFile.js';
 
     if (typeof this.data.macroFile === 'undefined') {
       done(new Error('No macrofile provided'));
     }
 
-    config.initialize(this.data.macroFile);
+    config.initialize(this.data.macroFile || DEFAULT_FILE_PATH);
     config.watch();
 
     macroSelenium.checkForSelenium().then(function (started) {
