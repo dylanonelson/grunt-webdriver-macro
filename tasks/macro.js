@@ -8,10 +8,11 @@
 
 'use strict';
 
+var chalk = require('chalk');
+var readline = require('readline');
+
 var config = require('../lib/configWatcher');
 var macroSelenium = require('../lib/macroSelenium');
-var readline = require('readline');
-var chalk = require('chalk');
 
 module.exports = function(grunt) {
 
