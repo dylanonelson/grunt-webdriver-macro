@@ -29,16 +29,14 @@ module.exports = function(grunt) {
     config.initialize(this.data.macroFile || DEFAULT_FILE_PATH);
     config.watch();
 
-    macroSelenium.checkForSelenium().then(function (started) {
-      if (started) {
-        console.log(chalk.bold.blue('Selenium server is already running locally. Skipping Selenium installation and startup.'));
-        return;
-      } else {
-        macroSelenium.start(this.data.seleniumVersion || DEFAULT_SELENIUM_VERSION).then(function(hub) {
-          driver = config.macros().setup(hub);
-        })
-      }
-    }.bind(this))
+    macroSelenium.start(this.data.seleniumVersion || DEFAULT_SELENIUM_VERSION)
+      .then(function(hub) {
+        driver = config.macros().setup(hub);
+      })
+      .catch(function (error) {
+        console.log('\n');
+        done(false);
+      });
 
     var rl = readline.createInterface({
       input: process.stdin,
