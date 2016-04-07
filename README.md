@@ -20,7 +20,13 @@ Reduce repetitive manual refreshing and DOM interactions using Selenium webdrive
 - [x] Read Selenium version from Gruntfile config
 - [x] Check for previously running Selenium server on start
 - [x] Handle Selenium errors thrown by macros
+- [ ] Handle macro config module as function
+- [ ] Handle syntax errors in reloaded macro defs
+- [ ] Put logging in separate module
 - [ ] Execute default macro on return
+- [ ] Mixin `reloadModule` function to macro object
+- [ ] Allow passing arguments to macros and chaining
+- [ ] Add `restart` macro to reinvoke setup function
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
