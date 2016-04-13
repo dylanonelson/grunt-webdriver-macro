@@ -31,7 +31,9 @@ module.exports = function(grunt) {
 
     macroSelenium.start(this.data.seleniumVersion || DEFAULT_SELENIUM_VERSION)
       .then(function(hub) {
+        console.error(chalk.styles.green.open);
         driver = config.macros().setup(hub);
+        rl.prompt();
       })
       .catch(function (error) {
         console.log('\n');
@@ -43,6 +45,8 @@ module.exports = function(grunt) {
       output: process.stdout
     });
 
+    rl.setPrompt(chalk.blue.bold('\nMACRO> '));
+
     var endTask = function () {
       config.macros().quit(driver);
       macroSelenium.shutdown();
@@ -51,6 +55,7 @@ module.exports = function(grunt) {
     }
 
     rl.on('line', function(line) {
+      console.log(chalk.styles.green.open);
       if (line === 'quit') {
         endTask()
       }
@@ -58,8 +63,9 @@ module.exports = function(grunt) {
       if (typeof config.macros()[line] != 'undefined') {
         try {
           config.macros()[line](driver);
+          rl.prompt();
         } catch (e) {
-          console.log(chalk.blue('Selenium threw an error while executing your macro ' + '(' + line + '):'));
+          console.log(chalk.blue('Your macro threw an error  ' + '(' + line + '):'));
           console.log(e);
           console.log('\n');
         }
