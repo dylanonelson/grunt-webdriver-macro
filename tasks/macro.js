@@ -57,7 +57,8 @@ module.exports = function(grunt) {
     rl.on('line', function(line) {
       console.log(chalk.styles.green.open);
       if (line === 'quit') {
-        endTask()
+        endTask();
+        return;
       }
 
       if (typeof config.macros()[line] != 'undefined') {
