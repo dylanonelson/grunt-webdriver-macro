@@ -20,7 +20,7 @@ Reduce repetitive manual refreshing and DOM interactions using Selenium webdrive
 - [x] Read Selenium version from Gruntfile config
 - [x] Check for previously running Selenium server on start
 - [x] Handle Selenium errors thrown by macros
-- [ ] Handle macro config module as function
+- [x] Handle macro config module as function
 - [ ] Handle syntax errors in reloaded macro defs
 - [ ] Put logging in separate module
 - [ ] Execute default macro on return
@@ -74,3 +74,8 @@ Type: `String`
 Default: `2.53.0`
 
 Version of Selenium server to install and run. Defaults to 2.53.0.
+
+### options.setup
+Type: `Function`
+
+Function called by the macro once the Selenium hub is started. Must return the driver instance that will be passed as a parameter to the dynamically reloaded macro module. Receives the address of the Selenium hub as a convenience.
