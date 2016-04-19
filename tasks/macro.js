@@ -58,14 +58,16 @@ module.exports = function(grunt) {
           if (typeof config.macros()[line] != 'undefined') {
             try {
               config.macros()[line]();
-              rl.prompt();
             } catch (e) {
               console.log(chalk.blue('Your macro threw an error  ' + '(' + line + '):'));
               console.log(e);
               console.log('\n');
+            } finally {
+              rl.prompt();
             }
           } else {
             console.log(chalk.red('You have not defined a macro for ' + line + '.'));
+            rl.prompt();
           }
         });
         rl.prompt();
