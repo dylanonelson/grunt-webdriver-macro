@@ -21,8 +21,8 @@ Reduce repetitive manual refreshing and DOM interactions using Selenium webdrive
 - [x] Check for previously running Selenium server on start
 - [x] Handle Selenium errors thrown by macros
 - [x] Handle macro config module as function
-- [ ] Handle syntax errors in reloaded macro defs
-- [ ] Put logging in separate module
+- [x] Handle syntax errors in reloaded macro defs
+- [x] Put logging in separate module
 - [ ] Execute default macro on return
 - [ ] Mixin `reloadModule` function to macro object
 - [ ] Allow passing arguments to macros and chaining

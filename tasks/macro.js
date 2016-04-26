@@ -8,30 +8,37 @@
 
 'use strict';
 
-var chalk = require('chalk');
-var readline = require('readline');
 var q = require('q');
+var readline = require('readline');
 
-var config = require('../lib/configWatcher');
-var macroSelenium = require('../lib/macroSelenium');
+var cli = require('../lib/macroCLI');
+var config = require('../lib/macroConfig');
+var selenium = require('../lib/macroSelenium');
 
 module.exports = function(grunt) {
 
-  grunt.registerMultiTask('macro', 'Grunt plugin for automating browser manipulation during front end development.', function() {
-    var done = this.async();
+  grunt.registerMultiTask('macro', 'Grunt plugin for automating browser' +
+      'manipulation during front end development.', function() {
+
     var data = this.data;
-    var rl = null;
-    var DEFAULT_SELENIUM_VERSION = '2.53.0';
+    var done = this.async();
+
     var DEFAULT_FILE_PATH = './macroFile.js';
+    var DEFAULT_SELENIUM_VERSION = '2.53.0';
 
     if (typeof data.macroFile === 'undefined') {
-      done(new Error('No macrofile provided'));
+      done(new Error('No macrofile provided.'));
     }
 
-    macroSelenium.start(data.seleniumVersion || DEFAULT_SELENIUM_VERSION)
+    var endTask = function (error) {
+      selenium.shutdown();
+      cli.shutdown();
+      done(error);
+    };
+
+    selenium.start(data.seleniumVersion || DEFAULT_SELENIUM_VERSION)
     .then(function(hub) {
       return q.Promise(function (resolve, reject, notify) {
-        console.error(chalk.styles.green.open);
         var driver = data.setup(hub);
         resolve(driver);
       })
@@ -39,46 +46,13 @@ module.exports = function(grunt) {
     .then(function (driver) {
       config.initialize(data.macroFile || DEFAULT_FILE_PATH, driver);
       config.watch();
+      return cli.start();
     })
-    .then(function() {
-      return q.Promise(function (resolve, reject, notify) {
-        rl = readline.createInterface({
-          input: process.stdin,
-          output: process.stdout
-        });
-
-        rl.setPrompt(chalk.blue.bold('\nMACRO> '));
-        rl.on('line', function(line) {
-          console.log(chalk.styles.green.open);
-          if (line === 'quit') {
-            reject();
-            return;
-          }
-
-          if (typeof config.macros()[line] != 'undefined') {
-            try {
-              config.macros()[line]();
-            } catch (e) {
-              console.log(chalk.blue('Your macro threw an error  ' + '(' + line + '):'));
-              console.log(e);
-              console.log('\n');
-            } finally {
-              rl.prompt();
-            }
-          } else {
-            console.log(chalk.red('You have not defined a macro for ' + line + '.'));
-            rl.prompt();
-          }
-        });
-        rl.prompt();
-      })
+    .then(function () {
+      endTask();
     })
     .catch(function (error) {
-      console.log('\n');
-      config.macros().quit();
-      macroSelenium.shutdown();
-      rl.close();
-      done(error);
+      endTask(error);
     })
 
   });
