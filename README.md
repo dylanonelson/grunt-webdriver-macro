@@ -24,9 +24,12 @@ Reduce repetitive manual refreshing and DOM interactions using Selenium webdrive
 - [x] Handle syntax errors in reloaded macro defs
 - [x] Put logging in separate module
 - [ ] Execute default macro on return
-- [ ] Mixin `reloadModule` function to macro object
 - [ ] Allow passing arguments to macros and chaining
-- [ ] Add `restart` macro to reinvoke setup function
+- [ ] Add `restart` command to reinvoke setup function
+- [ ] Add warnings when `quit` macro isn't defined
+- [ ] README
+- [ ] Publish on npm
+- [ ] Convert to npm module
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
