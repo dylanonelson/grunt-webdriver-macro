@@ -31,6 +31,7 @@ module.exports = function(grunt) {
     }
 
     var endTask = function (error) {
+      if (error) cli.error(error);
       selenium.shutdown();
       cli.shutdown();
       done(error);
